@@ -161,7 +161,7 @@
   },
   {
     "file": "foundation/alerter",
-    "repl": "^function (alerter\\.\\w+)\\(",
+    "repl": "^(alerter\\._\\w+) = |^function (alerter\\.\\w+)\\(",
     "del": "alerter = alerter or {}"
   },
   {
