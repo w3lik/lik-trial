@@ -3,6 +3,7 @@ alerter = alerter or {}
 
 ---@type Timer
 alerter._alerterMessageTimer = alerter._alerterMessageTimer or nil
+
 --- 异步玩家警告提示
 ---@param whichPlayer Player
 ---@param vcm boolean 是否播放音效
@@ -21,11 +22,9 @@ function alerter.message(whichPlayer, vcm, msg)
                 audio(Vcm("war3_Error"))
             end)
         end
-        async.call(whichPlayer, function()
-            UIKit("lik_msg"):alerterMessage(msg)
-        end)
         local frames = math.max(3, 0.2 * mbstring.len(msg)) * 60
         async.call(whichPlayer, function()
+            UIKit("lik_msg"):alerterMessage(msg)
             if (nil ~= alerter._alerterMessageTimer) then
                 destroy(alerter._alerterMessageTimer)
                 alerter._alerterMessageTimer = nil
