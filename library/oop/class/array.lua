@@ -112,7 +112,9 @@ function class:forEach(callFunc)
                 if (false == callFunc(k, v)) then
                     break
                 end
-                i = i + 1
+                if self._d.k2v[k] ~= nil then
+                    i = i + 1
+                end
             end
         end
     end
