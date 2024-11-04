@@ -1,8 +1,11 @@
 ---@class alerter
 alerter = alerter or {}
 
+---@type FrameText
+alerter._alerterMessageText = alerter._alerterMessageText or nil
 ---@type Timer
 alerter._alerterMessageTimer = alerter._alerterMessageTimer or nil
+
 
 --- 异步玩家警告提示
 ---@param whichPlayer Player
@@ -10,7 +13,7 @@ alerter._alerterMessageTimer = alerter._alerterMessageTimer or nil
 ---@param msg string 警告信息
 ---@return void
 function alerter.message(whichPlayer, vcm, msg)
-    if (false == isClass(whichPlayer, PlayerClass)) then
+    if (nil == alerter._alerterMessageText or false == isClass(whichPlayer, PlayerClass)) then
         return
     end
     if (type(vcm) ~= "boolean") then
@@ -24,13 +27,13 @@ function alerter.message(whichPlayer, vcm, msg)
         end
         local frames = math.max(3, 0.2 * mbstring.len(msg)) * 60
         async.call(whichPlayer, function()
-            UIKit("lik_msg"):alerterMessage(msg)
+            alerter._alerterMessageText:text(msg)
             if (nil ~= alerter._alerterMessageTimer) then
                 destroy(alerter._alerterMessageTimer)
                 alerter._alerterMessageTimer = nil
             end
             alerter._alerterMessageTimer = async.setTimeout(frames, function()
-                UIKit("lik_msg"):alerterMessage('')
+                alerter._alerterMessageText:text('')
             end)
         end)
     end

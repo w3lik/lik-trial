@@ -125,6 +125,13 @@ Game():onEvent(EVENT.Game.Start, "gameStart_", function()
         enumObj:start()
     end)
     
+    --- alerter_message Text
+    alerter._alerterMessageText = FrameText("alerter_message", FrameGameUI)
+        :relation(FRAME_ALIGN_BOTTOM, FrameGameUI, FRAME_ALIGN_BOTTOM, 0, 0.15)
+        :fontSize(13)
+        :textAlign(TEXT_ALIGN_CENTER)
+        :text('')
+    
     --- 默认游戏同步操作
     sync.receive("G_GAME_SYNC", function(syncData)
         local syncPlayer = syncData.syncPlayer
