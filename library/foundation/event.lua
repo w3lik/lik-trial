@@ -135,12 +135,16 @@ end
 ---@param triggerData table
 ---@return void
 function event.reactTrigger(evtKind, triggerData)
-    if (isClass(event._react[evtKind], ArrayClass)) then
-        event._react[evtKind]:forEach(function(_, val)
-            if (type(val) == "function") then
-                J.Promise(val, nil, nil, triggerData)
+    local data = event._react[evtKind]
+    if (isClass(data, ArrayClass) and data:count() > 0) then
+        local keys = data:keys()
+        local kLen = #keys
+        for i = 1, kLen, 1 do
+            local callFunc = data:get(keys[i])
+            if (nil ~= callFunc) then
+                J.Promise(callFunc, nil, nil, triggerData)
             end
-        end)
+        end
     end
 end
 
@@ -196,12 +200,15 @@ function event.syncTrigger(symbol, evtKind, triggerData)
     -- 反应
     event.reactTrigger(evtKind, triggerData)
     -- 判断事件注册执行与否
-    local reg = event.get(event._sync, symbol, evtKind)
-    if (isClass(reg, ArrayClass)) then
-        if (reg:count() > 0) then
-            reg:forEach(function(_, callFunc)
+    local data = event.get(event._sync, symbol, evtKind)
+    if (isClass(data, ArrayClass) and data:count() > 0) then
+        local keys = data:keys()
+        local kLen = #keys
+        for i = 1, kLen, 1 do
+            local callFunc = data:get(keys[i])
+            if (nil ~= callFunc) then
                 J.Promise(callFunc, nil, nil, triggerData)
-            end)
+            end
         end
     end
 end
@@ -258,12 +265,15 @@ function event.asyncTrigger(symbol, evtKind, triggerData)
         end
     end
     -- 判断事件注册执行与否
-    local reg = event.get(event._async, symbol, evtKind)
-    if (isClass(reg, ArrayClass)) then
-        if (reg:count() > 0) then
-            reg:forEach(function(_, callFunc)
+    local data = event.get(event._async, symbol, evtKind)
+    if (isClass(data, ArrayClass) and data:count() > 0) then
+        local keys = data:keys()
+        local kLen = #keys
+        for i = 1, kLen, 1 do
+            local callFunc = data:get(keys[i])
+            if (nil ~= callFunc) then
                 J.Promise(callFunc, nil, nil, triggerData)
-            end)
+            end
         end
     end
 end

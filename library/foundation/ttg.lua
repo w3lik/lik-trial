@@ -1,7 +1,7 @@
 ---@class ttg
 ttg = ttg or {}
 
-ttg._max = 50
+ttg._max = 100
 ttg._count = ttg._count or 0
 ttg._char = ttg._char or {}
 ttg._site = ttg._site or {}

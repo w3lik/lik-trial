@@ -470,9 +470,10 @@ function class:worthU2L(data)
     if (type(data) == "table") then
         ---@type Array
         local cvt = self:worthConvert()
+        ---@type Array
+        local rule = self:prop("worth")
         local rev = {}
-        local keys = cvt:keys()
-        self:worth():forEach(function(key, _)
+        rule:forEach(function(key, _)
             local value = cvt:get(key)
             if (value) then
                 rev[value[1]] = { key, value[2] }
@@ -481,6 +482,7 @@ function class:worthU2L(data)
                 turn[key] = data[key]
             end
         end)
+        local keys = rule:keys()
         local run = true
         while (run) do
             local count = 0
@@ -489,7 +491,7 @@ function class:worthU2L(data)
                     if (turn[rev[k][1]] == nil) then
                         turn[rev[k][1]] = 0
                     end
-                    if (turn[k] ~= 0) then
+                    if (nil ~= turn[k] and 0 ~= turn[k]) then
                         turn[rev[k][1]] = turn[rev[k][1]] + turn[k] * rev[k][2]
                         turn[k] = 0
                         count = count + 1
@@ -513,9 +515,10 @@ function class:worthL2U(data)
     if (type(data) == "table") then
         ---@type Array
         local cvt = self:worthConvert()
+        ---@type Array
+        local rule = self:prop("worth")
         local rev = {}
-        local keys = cvt:keys()
-        self:worth():forEach(function(key, _)
+        rule:forEach(function(key, _)
             local value = cvt:get(key)
             if (value) then
                 rev[key] = { value[1], value[2] }
@@ -524,6 +527,7 @@ function class:worthL2U(data)
                 turn[key] = data[key]
             end
         end)
+        local keys = rule:keys()
         local run = true
         while (run) do
             local count = 0
