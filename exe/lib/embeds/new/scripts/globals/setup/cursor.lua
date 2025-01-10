@@ -347,7 +347,7 @@ Game():onEvent(EVENT.Game.Start, "myCursor", function()
             csPointer:texture(texture)
             csPointer:alpha(alpha)
             csPointer:size(width, height)
-            csPointer:relation(align, FrameGameUI, FRAME_ALIGN_LEFT_BOTTOM, rx, ry)
+            csPointer:relation(align, FrameGameUI, FRAME_ALIGN_LEFT_BOTTOM, japi.FrameDisAdaptive(rx), ry)
         end,
         ---@param evtData evtOnMouseLeftClickData
         leftClick = function(evtData)
@@ -411,7 +411,7 @@ Game():onEvent(EVENT.Game.Start, "myCursor", function()
             csPointer:texture(texture)
             csPointer:alpha(alpha)
             csPointer:size(width, height)
-            csPointer:relation(align, FrameGameUI, FRAME_ALIGN_LEFT_BOTTOM, rx, ry)
+            csPointer:relation(align, FrameGameUI, FRAME_ALIGN_LEFT_BOTTOM, japi.FrameDisAdaptive(rx), ry)
         end,
         ---@param evtData evtOnMouseLeftClickData
         leftClick = function(evtData)
@@ -782,6 +782,7 @@ Game():onEvent(EVENT.Game.Start, "myCursor", function()
     
     cursor.setQuote("follow", {
         start = function()
+            cursorLock()
             local data = cursor.currentData()
             ---@type Ability|Item
             local obj = data.object
@@ -837,6 +838,7 @@ Game():onEvent(EVENT.Game.Start, "myCursor", function()
             end
         end,
         over = function()
+            cursorUnLock()
             csFollow:show(false)
             local data = cursor.currentData()
             data.over()

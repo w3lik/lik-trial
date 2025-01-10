@@ -39,11 +39,16 @@ function ability.damage(options)
     elseif (options.damageSrc == DAMAGE_SRC.ability and options.sourceUnit ~= nil and options.sourceUnit:isSilencing()) then
         return
     end
+    --- 触发受伤前事件
     event.syncTrigger(options.targetUnit, EVENT.Unit.BeforeHurt, options)
+    -- 修正伤害类型
     options.damageType = options.damageType or DAMAGE_TYPE.common
     options.damageTypeLevel = options.damageTypeLevel or 0
+    -- 修正破防类型
     options.breakArmor = options.breakArmor or {}
+    --- 对接伤害过程
     FlowRun("damage", options)
+    --- 最终伤害
     if (options.damage >= 1) then
         if (options.sourceUnit ~= nil) then
             options.targetUnit:lastHurtSource(options.sourceUnit)
@@ -56,6 +61,7 @@ function ability.damage(options)
                     options.sourceUnit:owner():superposition("damage", "-=1")
                 end
             end)
+            --- 触发伤害事件
             event.syncTrigger(options.sourceUnit, EVENT.Unit.Damage, options)
             if (options.damageSrc == DAMAGE_SRC.attack) then
                 event.syncTrigger(options.sourceUnit, EVENT.Unit.Attack, options)
@@ -71,6 +77,7 @@ function ability.damage(options)
                 options.targetUnit:owner():superposition("hurt", "-=1")
             end
         end)
+        --- 触发受伤事件
         event.syncTrigger(options.targetUnit, EVENT.Unit.Hurt, options)
         if (options.damageSrc == DAMAGE_SRC.attack) then
             event.syncTrigger(options.targetUnit, EVENT.Unit.Be.Attack, options)

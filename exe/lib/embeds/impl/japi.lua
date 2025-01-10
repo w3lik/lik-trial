@@ -277,10 +277,10 @@ Game():onEvent(EVENT.Game.Start, "_lk_japi", function()
         end
     end)
     --- Z轴坐标初始化
-    local xMin = RegionWorld:xMin() // japi._zi
-    local yMin = RegionWorld:yMin() // japi._zi
-    local xMax = RegionWorld:xMax() // japi._zi
-    local yMax = RegionWorld:yMax() // japi._zi
+    local xMin = math.floor(RegionWorld:xMin() / japi._zi)
+    local yMin = math.floor(RegionWorld:yMin() / japi._zi)
+    local xMax = math.floor(RegionWorld:xMax() / japi._zi)
+    local yMax = math.floor(RegionWorld:yMax() / japi._zi)
     local loc = J.Location(0, 0)
     J.HandleRef(loc)
     local x, y = xMin, 0

@@ -259,15 +259,18 @@ function ability.effective(whichAbility, evtData)
         return
     end
     local tt = whichAbility:targetType()
+    --- 预执行
     if (isClass(costAdv, ArrayClass)) then
         costAdv:forEach(function(_, v)
             v.deplete(whichAbility)
         end)
     end
     local triggerUnit = evtData.triggerUnit
+    --- 有目标坐标时，改一下面向角度
     if (evtData.targetX and evtData.targetY) then
         triggerUnit:facing(vector2.angle(triggerUnit:x(), triggerUnit:y(), evtData.targetX, evtData.targetY))
     end
+    --- 触发使用物品
     local bIt = whichAbility:bindItem()
     if (isClass(bIt, ItemClass)) then
         if (bIt:charges() <= 0 and bIt:consumable()) then
@@ -277,8 +280,10 @@ function ability.effective(whichAbility, evtData)
         event.syncTrigger(bIt, EVENT.Item.Used, evtData)
         event.syncTrigger(triggerUnit, EVENT.Unit.Item.Used, evtData)
     end
+    --- 技能开始施放（但未生效）
     event.syncTrigger(whichAbility, EVENT.Ability.Spell, evtData)
     event.syncTrigger(triggerUnit, EVENT.Unit.Ability.Spell, evtData)
+    --- 技能准备进入吟唱
     local cc = 0
     if (tt ~= ABILITY_TARGET_TYPE.pas) then
         cc = whichAbility:castChant()

@@ -191,13 +191,16 @@ end
 function japi.Z(x, y)
     if (type(x) == "number" and type(y) == "number") then
         local zi = japi._zi
-        local x0, y0 = x // zi, y // zi
+        local x0, y0 = math.round(x / zi), math.round(y / zi)
         local x1, y1 = x0 + 1, y0 + 1
         if (nil == japi._z[x0]) then
             if (nil == japi._z[x1]) then
                 return 0
             end
             return japi._z[x1][y0] or 0
+        end
+        if (nil == japi._z[x1]) then
+            return japi._z[x0][y0] or 0
         end
         local sel = {
             { japi._z[x0][y0] or 0, vector2.distance(x, y, x0 * zi, y0 * zi) },
